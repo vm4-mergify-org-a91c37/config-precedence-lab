@@ -1,0 +1,10 @@
+name: VM4 workflow permission PR probe
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inert:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo VM4_WORKFLOW_PERMISSION_PROBE
