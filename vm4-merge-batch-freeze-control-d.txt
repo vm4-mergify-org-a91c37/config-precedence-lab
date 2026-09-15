@@ -1,0 +1,1 @@
+control marker D under already-active merge freeze
