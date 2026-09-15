@@ -1,4 +1,4 @@
-name: VM4 CI trace parent binding
+name: VM4 CI sibling upload ordering
 
 on:
   pull_request:
@@ -9,70 +9,45 @@ permissions:
   contents: read
 
 jobs:
-  matched-a:
+  fast-a:
     runs-on: ubuntu-latest
     steps:
-      - name: Install released Mergify CLI
-        uses: Mergifyio/setup-cli@dc99f07e699b94b39e5495c24596372813eadcbc
+      - uses: Mergifyio/setup-cli@dc99f07e699b94b39e5495c24596372813eadcbc
         with:
           mergify_cli_version: 2026.9.10.1
-      - name: Create matched A report
+      - name: Upload fast A/A marker
+        env:
+          MERGIFY_TOKEN: ${{ secrets.VM4_TRACE_PARENT_BINDING_20260916 }}
         shell: bash
         run: |
           cat > report.xml <<'XML'
           <?xml version="1.0" encoding="UTF-8"?>
           <testsuites tests="1" failures="0">
-            <testsuite name="vm4-trace-parent-binding" tests="1" failures="0">
-              <testcase classname="vm4.trace.binding" name="VM4_TRACE_MATCHED_A_20260916"/>
+            <testsuite name="vm4-sibling-order" tests="1" failures="0">
+              <testcase classname="vm4.sibling.order" name="VM4_SIBLING_FAST_FIRST_20260916"/>
             </testsuite>
           </testsuites>
           XML
-      - name: Upload matched A path / A payload
-        env:
-          MERGIFY_TOKEN: ${{ secrets.VM4_TRACE_PARENT_BINDING_20260916 }}
-        run: |
-          mergify ci junit-process \
-            --repository vm4-mergify-org-a91c37/config-precedence-lab \
-            report.xml
+          mergify ci junit-process --repository vm4-mergify-org-a91c37/config-precedence-lab report.xml
 
-  mismatch-a-path-b-payload:
+  slow-a:
     runs-on: ubuntu-latest
     steps:
-      - name: Install released Mergify CLI
-        uses: Mergifyio/setup-cli@dc99f07e699b94b39e5495c24596372813eadcbc
+      - uses: Mergifyio/setup-cli@dc99f07e699b94b39e5495c24596372813eadcbc
         with:
           mergify_cli_version: 2026.9.10.1
-      - name: Create mismatch report
-        shell: bash
-        run: |
-          cat > report.xml <<'XML'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <testsuites tests="1" failures="0">
-            <testsuite name="vm4-trace-parent-binding" tests="1" failures="0">
-              <testcase classname="vm4.trace.binding" name="VM4_TRACE_A_PATH_B_PAYLOAD_20260916"/>
-            </testsuite>
-          </testsuites>
-          XML
-      - name: Upload A path / B payload identity
+      - name: Upload delayed A/A marker
         env:
           MERGIFY_TOKEN: ${{ secrets.VM4_TRACE_PARENT_BINDING_20260916 }}
         shell: bash
         run: |
-          python3 - <<'PY2'
-          import json, os
-          with open(os.environ['GITHUB_EVENT_PATH'], encoding='utf-8') as f:
-              event = json.load(f)
-          event.setdefault('repository', {})['full_name'] = 'vm4-ciadmin-lab-b0913/ciadmin-probe'
-          event.setdefault('pull_request', {}).setdefault('head', {})['sha'] = 'ced2f8241ac4e2616c3697d240bd0f920a9b6372'
-          event['pull_request']['head']['ref'] = 'main'
-          with open('/tmp/vm4-b-event.json', 'w', encoding='utf-8') as f:
-              json.dump(event, f)
-          PY2
-          GITHUB_REPOSITORY='vm4-ciadmin-lab-b0913/ciadmin-probe' \
-          GITHUB_SHA='ced2f8241ac4e2616c3697d240bd0f920a9b6372' \
-          GITHUB_HEAD_REF='main' \
-          GITHUB_REF_NAME='main' \
-          GITHUB_EVENT_PATH='/tmp/vm4-b-event.json' \
-          mergify ci junit-process \
-            --repository vm4-mergify-org-a91c37/config-precedence-lab \
-            report.xml
+          sleep 10
+          cat > report.xml <<'XML'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <testsuites tests="1" failures="0">
+            <testsuite name="vm4-sibling-order" tests="1" failures="0">
+              <testcase classname="vm4.sibling.order" name="VM4_SIBLING_SLOW_SECOND_20260916"/>
+            </testsuite>
+          </testsuites>
+          XML
+          mergify ci junit-process --repository vm4-mergify-org-a91c37/config-precedence-lab report.xml
