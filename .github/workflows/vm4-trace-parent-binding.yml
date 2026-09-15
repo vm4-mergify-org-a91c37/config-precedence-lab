@@ -1,0 +1,66 @@
+name: VM4 CI trace parent binding
+
+on:
+  push:
+    branches:
+      - vm4-trace-parent-binding-20260916
+
+permissions:
+  contents: read
+
+jobs:
+  matched-a:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install released Mergify CLI
+        uses: Mergifyio/setup-cli@dc99f07e699b94b39e5495c24596372813eadcbc
+        with:
+          mergify_cli_version: 2026.9.10.1
+      - name: Create matched A report
+        shell: bash
+        run: |
+          cat > report.xml <<'XML'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <testsuites tests="1" failures="0">
+            <testsuite name="vm4-trace-parent-binding" tests="1" failures="0">
+              <testcase classname="vm4.trace.binding" name="VM4_TRACE_MATCHED_A_20260916"/>
+            </testsuite>
+          </testsuites>
+          XML
+      - name: Upload matched A path / A payload
+        env:
+          MERGIFY_TOKEN: ${{ secrets.VM4_TRACE_PARENT_BINDING_20260916 }}
+        run: |
+          mergify ci junit-process \
+            --repository vm4-mergify-org-a91c37/config-precedence-lab \
+            report.xml
+
+  mismatch-a-path-b-payload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install released Mergify CLI
+        uses: Mergifyio/setup-cli@dc99f07e699b94b39e5495c24596372813eadcbc
+        with:
+          mergify_cli_version: 2026.9.10.1
+      - name: Create mismatch report
+        shell: bash
+        run: |
+          cat > report.xml <<'XML'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <testsuites tests="1" failures="0">
+            <testsuite name="vm4-trace-parent-binding" tests="1" failures="0">
+              <testcase classname="vm4.trace.binding" name="VM4_TRACE_A_PATH_B_PAYLOAD_20260916"/>
+            </testsuite>
+          </testsuites>
+          XML
+      - name: Upload A path / B payload identity
+        env:
+          MERGIFY_TOKEN: ${{ secrets.VM4_TRACE_PARENT_BINDING_20260916 }}
+        run: |
+          GITHUB_REPOSITORY='vm4-ciadmin-lab-b0913/ciadmin-probe' \
+          GITHUB_SHA='ced2f8241ac4e2616c3697d240bd0f920a9b6372' \
+          GITHUB_REF='refs/heads/main' \
+          GITHUB_REF_NAME='main' \
+          mergify ci junit-process \
+            --repository vm4-mergify-org-a91c37/config-precedence-lab \
+            report.xml
