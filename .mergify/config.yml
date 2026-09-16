@@ -9,8 +9,6 @@ queue_rules:
     merge_conditions:
       - label = vm4-never-merge
     merge_method: merge
-    autoqueue: true
-
   - name: auto-release
     queue_conditions:
       - base = release
@@ -18,8 +16,6 @@ queue_rules:
     merge_conditions:
       - label = vm4-never-merge
     merge_method: merge
-    autoqueue: true
-
   - name: manual-main
     queue_conditions:
       - base = main
@@ -27,3 +23,13 @@ queue_rules:
     merge_conditions:
       - label = vm4-never-merge
     merge_method: merge
+merge_protections_settings:
+# auto_merge_conditions reflects the queue_conditions of the queue rules that previously had autoqueue: true. The following queue rules were manual-only ('manual-main') and remain reachable via the `/queue` command. Review and adjust if needed.
+  auto_merge_conditions:
+    - or:
+        - and:
+            - base = main
+            - label = vm4-migrate-auto-a
+        - and:
+            - base = release
+            - label = vm4-migrate-auto-b
