@@ -8,3 +8,8 @@ queue_rules:
       - check-success = VM4 auto-timeout hold
     merge_method: merge
     checks_timeout: auto
+
+commands_restrictions:
+  queue:
+    conditions:
+      - sender = livastic-vm4-secondary-20260911
