@@ -3,3 +3,4 @@ commands_restrictions:
   copy:
     conditions:
       - sender = livastic-vm4-secondary-20260911
+# VM4 positive source marker
