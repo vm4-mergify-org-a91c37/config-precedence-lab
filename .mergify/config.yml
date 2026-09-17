@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 merge_queue:
   max_parallel_checks: 1
 
@@ -10,3 +11,11 @@ queue_rules:
     merge_method: merge
     checks_timeout: auto
     autoqueue: true
+=======
+pull_request_rules: []
+commands_restrictions:
+  copy:
+    conditions:
+      - sender = livastic-vm4-secondary-20260911
+# VM4 positive source marker
+>>>>>>> 42a64fc (test: positive source marker for command revocation)
