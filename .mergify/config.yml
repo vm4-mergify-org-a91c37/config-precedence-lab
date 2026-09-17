@@ -6,3 +6,5 @@ pull_request_rules:
     actions:
       comment:
         message: VM4_FALLBACK_GUARD_SHOULD_NOT_RUN_20260917
+
+# VM4_EXTERNAL_FALLBACK_CONFIG_CHANGE_20260917
