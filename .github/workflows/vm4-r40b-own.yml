@@ -1,0 +1,10 @@
+name: VM4 R40B Own Workflow ID Control
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  marker:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo VM4_R40B_OWN_WORKFLOW_ID_CONTROL
