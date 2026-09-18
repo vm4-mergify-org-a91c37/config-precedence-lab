@@ -1,0 +1,10 @@
+{
+  "name": "vm4-r41-playwright-filesuite",
+  "private": true,
+  "type": "module",
+  "scripts": {"test:r41": "playwright test"},
+  "devDependencies": {
+    "@mergifyio/playwright": "0.3.7",
+    "@playwright/test": "1.62.0"
+  }
+}
