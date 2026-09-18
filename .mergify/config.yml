@@ -1,1 +1,15 @@
+commands_restrictions:
+  queue:
+    conditions:
+      - sender = livastic-vm4-primary-20260911
+merge_queue:
+  max_parallel_checks: 1
+queue_rules:
+  - name: default
+    queue_conditions: []
+    merge_conditions:
+      - check-success = VM4 R40 NEVER
+    batch_size: 1
+    batch_max_wait_time: 0
+    merge_method: merge
 pull_request_rules: []
