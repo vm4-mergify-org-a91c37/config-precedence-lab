@@ -1,0 +1,22 @@
+name: VM4 R45 Cross Job Annotation
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  trusted-target:
+    name: VM4 R45 Trusted Target Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail without annotation canary
+        run: |
+          echo "VM4 R45 trusted target failure"
+          exit 1
+  annotation-source:
+    name: VM4 R45 Annotation Source Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Emit annotation canary then fail
+        run: |
+          echo "::error file=vm4-r45-attacker.txt,line=1,col=1::VM4_R45_CROSS_JOB_CANARY"
+          exit 1
