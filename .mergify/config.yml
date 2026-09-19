@@ -1,9 +1,1 @@
-pull_request_rules:
-  - name: vm4-r41-playwright-filesuite-auto-merge
-    conditions:
-      - author = livastic-vm4-secondary-20260911
-      - title = VM4_R41_PLAYWRIGHT_COLLISION_AUTO_MERGE
-      - check-success = VM4 R41 Playwright Gate
-    actions:
-      merge:
-        method: merge
+pull_request_rules: []
