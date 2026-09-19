@@ -1,5 +1,7 @@
 import { test, expect } from '@mergifyio/playwright';
 
-test('gate', async () => {
-  expect('known-broken-top-level').toBe('passing');
+test.describe('collision.spec.mjs', () => {
+  test('gate', async () => {
+    expect('attacker-unrelated-nested-failure').toBe('passing');
+  });
 });
