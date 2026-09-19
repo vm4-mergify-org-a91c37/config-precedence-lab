@@ -1,5 +1,1 @@
-commands_restrictions:
-  refresh:
-    conditions:
-      - sender = @vm4-r40-child-20260920
 pull_request_rules: []
