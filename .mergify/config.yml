@@ -1,1 +1,9 @@
 pull_request_rules: []
+queue_rules:
+  - name: default
+    batch_size: 2
+    merge_method: merge-batch
+    merge_conditions:
+      - check-success = VM4 R3 Head Freshness Delay
+merge_queue:
+  max_parallel_checks: 1
