@@ -1,0 +1,13 @@
+merge_queue:
+  queue_controls_comment: false
+
+queue_rules:
+  - name: vm4-checks-postponed-250925
+    queue_conditions:
+      - label = vm4-postponed-go-250925
+    merge_conditions:
+      - status-success = vm4-postponed-hold-250925
+    merge_method: merge
+    batch_size: 1
+    batch_max_wait_time: "1 second"
+    checks_timeout: null
