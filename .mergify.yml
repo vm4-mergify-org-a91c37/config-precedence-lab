@@ -1,20 +1,31 @@
 merge_queue:
-  max_parallel_checks: 1
   queue_controls_comment: false
 
 queue_rules:
-  - name: vm4-draft-postsuccess-260929
+  - name: vm4-checks-postponed-250925
     queue_conditions:
-      - or:
-          - title = VM4_DRAFT_POSTSUCCESS_A_260929
-          - title = VM4_DRAFT_POSTSUCCESS_B_260929
+      - label = vm4-postponed-go-250925
     merge_conditions:
-      - -draft
-      - status-success = VM4 Draft Postsuccess Gate 260929
-      - schedule = 15:30-15:40
+      - status-success = vm4-postponed-hold-250925
     merge_method: merge
-    batch_size: 2
+    batch_size: 1
     batch_max_wait_time: "1 second"
     checks_timeout: null
 
-pull_request_rules: []
+pull_request_rules:
+  - name: vm4 merged-by stale identity backport probe
+    conditions:
+      - number = 337
+      - merged
+      - merged-by = livastic-vm4-secondary-20260911
+    actions:
+      backport:
+        branches:
+          - main
+  - name: vm4 depends-on generation rebind merge probe 260927
+    conditions:
+      - title = VM4_DEPENDS_ON_REBIND_TARGET_260927
+      - -merged
+    actions:
+      merge:
+        method: squash
