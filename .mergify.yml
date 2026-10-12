@@ -29,3 +29,12 @@ pull_request_rules:
     actions:
       merge:
         method: squash
+
+  - name: vm4-r32-current-protected-merge-canary-261012
+    conditions:
+      - base = vm4-r32-current-261012
+      - author = livastic-vm4-secondary-oc12-20260929
+      - title = VM4_R32_CURRENT_REVIEW_BYPASS_TRIGGER_261012
+    actions:
+      merge:
+        method: merge
